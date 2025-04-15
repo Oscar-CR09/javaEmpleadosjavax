@@ -96,6 +96,8 @@ public class frmMantEmpleados extends javax.swing.JInternalFrame {
         btnPdf = new javax.swing.JButton();
         btnOds = new javax.swing.JButton();
 
+        setTitle("Empleados");
+
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales del Empleado"));
 
         jLabel1.setText("Nombre del Empleado:");
