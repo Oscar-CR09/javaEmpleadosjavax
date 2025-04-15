@@ -4,9 +4,6 @@
  */
 package com.mycompany.dsk4;
 
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 
 import javax.swing.JOptionPane;
 import java.io.FileOutputStream;
@@ -30,22 +27,28 @@ import com.itextpdf.text.pdf.PdfPTable;
 //import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.BaseColor;
 //import com.itextpdf.text.Rectangle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 
 /**
  *
  * @author oscar
  */
-public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
+public class frmMantNomina extends javax.swing.JInternalFrame {
     private int fila;
     Object[] filas =new Object[6];
     javax.swing.table.DefaultTableModel modeloTabla=new javax.swing.table.DefaultTableModel();
    
 
     /**
-     * Creates new form frmMantDepaEmpleados
+     * Creates new form frmMantNomina
      */
-    public frmMantDepaEmpleados() {
+    public frmMantNomina() {
         initComponents();
         configurarModelo();
     }
@@ -61,14 +64,18 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtDepartamento = new javax.swing.JTextField();
+        txtEmpleado = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtJefe = new javax.swing.JTextField();
+        txtHoras = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtPuesto = new javax.swing.JTextField();
+        txtPrecio = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        lblSalario = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lblNeto = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabDepartamentos = new javax.swing.JTable();
+        tabNomina = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
@@ -76,21 +83,29 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
         btnExcel = new javax.swing.JButton();
         btnPdf = new javax.swing.JButton();
 
-        setTitle("Departamentos");
+        setTitle("Nomina...");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales del Departamento"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos generales del trabajador"));
 
-        jLabel1.setText("Nombre del departamento:");
+        jLabel1.setText("Nombre del Empleado:");
 
-        txtDepartamento.setText("*");
+        txtEmpleado.setText("*");
 
-        jLabel2.setText("Jefe directo:");
+        jLabel2.setText("Horas trabajadas:");
 
-        txtJefe.setText("*");
+        txtHoras.setText("*");
 
-        jLabel3.setText("Puesto:");
+        jLabel3.setText("Precio por Hora:");
 
-        txtPuesto.setText("*");
+        txtPrecio.setText("*");
+
+        jLabel4.setText("Salario Bruto:");
+
+        lblSalario.setText("=");
+
+        jLabel5.setText("Salario Neto:");
+
+        lblNeto.setText("=");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -99,14 +114,28 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDepartamento)
-                    .addComponent(txtJefe, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-                    .addComponent(txtPuesto))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(txtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblNeto)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblSalario)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -115,23 +144,26 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtJefe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(116, Short.MAX_VALUE))
+                    .addComponent(jLabel4)
+                    .addComponent(lblSalario)
+                    .addComponent(jLabel5)
+                    .addComponent(lblNeto))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Departamentos"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de nomina"));
 
-        tabDepartamentos.setModel(new javax.swing.table.DefaultTableModel(
+        tabNomina.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -141,7 +173,7 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tabDepartamentos);
+        jScrollPane1.setViewportView(tabNomina);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -156,8 +188,8 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnAgregar.setText("Agregar");
@@ -168,18 +200,8 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
         });
 
         btnModificar.setText("Modificar");
-        btnModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarActionPerformed(evt);
-            }
-        });
 
         btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -189,63 +211,49 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
         });
 
         btnExcel.setText("Excel");
-        btnExcel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcelActionPerformed(evt);
-            }
-        });
 
-        btnPdf.setText("PDF");
-        btnPdf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPdfActionPerformed(evt);
-            }
-        });
+        btnPdf.setText("pdf");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(btnExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 334, Short.MAX_VALUE)
-                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnExcel))
+                        .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnPdf, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(31, 31, 31)))
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(159, 159, 159))))
+                                .addComponent(btnPdf)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(10, 10, 10)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
                     .addComponent(btnModificar)
                     .addComponent(btnEliminar)
                     .addComponent(btnCancelar))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExcel)
                     .addComponent(btnPdf))
@@ -255,44 +263,14 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
-        modeloTabla.removeRow(fila);//elimina fila determinada
-        tabDepartamentos.setModel(modeloTabla);
-        
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
-            detDatos();
-        for (int i = 0; i < 6; i++) {//para la 6 columnas de la tabla
-            modeloTabla.setValueAt(filas[i], fila, i);//Cambie en el modelo por lo que tiene almacenado el vector de filas
-            tabDepartamentos.setModel(modeloTabla);//Actualiza la tabla //(JTable) con el modelo
-                        
-        }
-    }//GEN-LAST:event_btnModificarActionPerformed
-
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        detDatos();
-        modeloTabla.addRow(filas);
-        tabDepartamentos.setModel(modeloTabla);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         go:this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void btnExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcelActionPerformed
-        // TODO add your handling code here:
-        guardarEnExcel();
-    }//GEN-LAST:event_btnExcelActionPerformed
-
-    private void btnPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfActionPerformed
-        // TODO add your handling code here:
-        guardarEnPDF();
-    }//GEN-LAST:event_btnPdfActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -305,36 +283,42 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabDepartamentos;
-    private javax.swing.JTextField txtDepartamento;
-    private javax.swing.JTextField txtJefe;
-    private javax.swing.JTextField txtPuesto;
+    private javax.swing.JLabel lblNeto;
+    private javax.swing.JLabel lblSalario;
+    private javax.swing.JTable tabNomina;
+    private javax.swing.JTextField txtEmpleado;
+    private javax.swing.JTextField txtHoras;
+    private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 
-      private void configurarModelo() {
-        modeloTabla.addColumn("Departamento");
-        modeloTabla.addColumn("Jefe directo");
-        modeloTabla.addColumn("Puesto");
+     private void configurarModelo() {
+        modeloTabla.addColumn("Empleado");
+        modeloTabla.addColumn("Horas");
+        modeloTabla.addColumn("Precio");
+        modeloTabla.addColumn("Salario");
+        modeloTabla.addColumn("Sueldo Neto");
      
     }
-      
-       private void detDatos() {
-         String AInteres="";
-         filas[0]=txtDepartamento.getText();//carga el nombre del vector de Objecto
-         filas[1]=txtJefe.getText();// carga el jefe
-         filas[2]=txtPuesto.getText();// carga el puesto
+     private void detDatos() {
+         //String AInteres="";
+         filas[0]=txtEmpleado.getText();//carga el nombre del vector de Objecto
+         filas[1]=txtHoras.getText();// carga las horas
+         filas[2]=txtPrecio.getText();// carga el precio
+         //filas[3]=lblNeto.getText();// carga el puesto
+         //filas[4]=lblSalario.getText();// carga el puesto
         
-         //filas[5]=AInteres; //Agrega en la columna 5 la variable AInteres
     }
        
-       private void guardarEnExcel() {
+      private void guardarEnExcel() {
         
     Workbook workbook = new XSSFWorkbook();
     Sheet sheet = workbook.createSheet("Empleados");
-    TableModel model = tabDepartamentos.getModel();
+    TableModel model = tabNomina.getModel();
 
     try {
         // Escribir los encabezados de las columnas
@@ -411,7 +395,7 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
                // Espacio en blanco antes de la tabla
                document.add(Chunk.NEWLINE);
 
-               PdfPTable pdfTable = new PdfPTable(tabDepartamentos.getColumnCount());
+               PdfPTable pdfTable = new PdfPTable(tabNomina.getColumnCount());
                pdfTable.setWidthPercentage(100);
 
                // Definir fuentes y colores
@@ -419,7 +403,7 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
                Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 9);
                BaseColor headerColor = new BaseColor(220, 220, 220);
 
-               TableModel model = tabDepartamentos.getModel();
+               TableModel model = tabNomina.getModel();
 
                // Escribir los encabezados de las columnas
                for (int i = 0; i < model.getColumnCount(); i++) {
@@ -466,9 +450,45 @@ public class frmMantDepaEmpleados extends javax.swing.JInternalFrame {
                e.printStackTrace();
            }
        }
+    
+     public void calcularSalarioBruto() {
+        try {
+            double horasTrabajadas = Double.parseDouble(txtHoras.getText());
+            double precioPorHora = Double.parseDouble(txtPrecio.getText());
+            double salarioBruto = horasTrabajadas * precioPorHora;
 
+            // Formatear el salario bruto a dos decimales (opcional)
+            String salarioFormateado = String.format("%.2f", salarioBruto);
 
+            lblSalario.setText(salarioFormateado);
+            filas[3] = salarioFormateado; // Guarda el salario bruto en el array de filas
+        } catch (NumberFormatException e) {
+            lblSalario.setText("Error"); // Manejar el error si las horas o el precio no son números válidos
+            filas[3] = "";
+        }
+    }
+
+    public void calcularSalarioNeto(double deducciones) {
+        try {
+            double salarioBruto = Double.parseDouble(lblSalario.getText().replace(",", "")); // Asegurarse de eliminar comas si las hay
+            double salarioNeto = salarioBruto - deducciones;
+
+            // Formatear el salario neto a dos decimales (opcional)
+            String salarioNetoFormateado = String.format("%.2f", salarioNeto);
+
+            lblNeto.setText(salarioNetoFormateado);
+            filas[4] = salarioNetoFormateado; // Guarda el salario neto en el array de filas
+        } catch (NumberFormatException e) {
+            lblNeto.setText("Error"); // Manejar el error si el salario bruto no es un número válido
+            filas[4] = "";
+        } finally {
+            detDatos(); // Asegurarse de que los datos básicos estén actualizados
+            modeloTabla.addRow(filas); // Agrega la fila completa a la tabla
+            tabNomina.setModel(modeloTabla); // Actualiza el modelo de la tabla
+        }
+    }
+
+    
 
 
 }
-
