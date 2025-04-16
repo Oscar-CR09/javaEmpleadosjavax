@@ -51,6 +51,7 @@ public class frmMantNomina extends javax.swing.JInternalFrame {
     public frmMantNomina() {
         initComponents();
         configurarModelo();
+       
     }
 
     /**
@@ -265,6 +266,15 @@ public class frmMantNomina extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
+        //detDatos();
+        //modeloTabla.addRow(filas);
+       // tabNomina.setModel(modeloTabla);
+        calcularSalarioBruto();
+        double deducciones = 50.0; // Reemplaza con el valor real de las deducciones
+        calcularSalarioNeto(deducciones);
+        
+        
+   
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -300,8 +310,8 @@ public class frmMantNomina extends javax.swing.JInternalFrame {
         modeloTabla.addColumn("Empleado");
         modeloTabla.addColumn("Horas");
         modeloTabla.addColumn("Precio");
-        modeloTabla.addColumn("Salario");
-        modeloTabla.addColumn("Sueldo Neto");
+        modeloTabla.addColumn("Salario Neto");
+        modeloTabla.addColumn("Sueldo Bruto");
      
     }
      private void detDatos() {
@@ -311,7 +321,8 @@ public class frmMantNomina extends javax.swing.JInternalFrame {
          filas[2]=txtPrecio.getText();// carga el precio
          //filas[3]=lblNeto.getText();// carga el puesto
          //filas[4]=lblSalario.getText();// carga el puesto
-        
+                      // Ejemplo dentro de un ActionListener para un botón de cálculo
+      
     }
        
       private void guardarEnExcel() {
@@ -461,10 +472,10 @@ public class frmMantNomina extends javax.swing.JInternalFrame {
             String salarioFormateado = String.format("%.2f", salarioBruto);
 
             lblSalario.setText(salarioFormateado);
-            filas[3] = salarioFormateado; // Guarda el salario bruto en el array de filas
+            filas[4] = salarioFormateado; // Guarda el salario bruto en el array de filas
         } catch (NumberFormatException e) {
             lblSalario.setText("Error"); // Manejar el error si las horas o el precio no son números válidos
-            filas[3] = "";
+            filas[4] = "";
         }
     }
 
@@ -477,18 +488,21 @@ public class frmMantNomina extends javax.swing.JInternalFrame {
             String salarioNetoFormateado = String.format("%.2f", salarioNeto);
 
             lblNeto.setText(salarioNetoFormateado);
-            filas[4] = salarioNetoFormateado; // Guarda el salario neto en el array de filas
+            filas[3] = salarioNetoFormateado; // Guarda el salario neto en el array de filas
         } catch (NumberFormatException e) {
             lblNeto.setText("Error"); // Manejar el error si el salario bruto no es un número válido
-            filas[4] = "";
+            filas[3] = "";
         } finally {
             detDatos(); // Asegurarse de que los datos básicos estén actualizados
             modeloTabla.addRow(filas); // Agrega la fila completa a la tabla
             tabNomina.setModel(modeloTabla); // Actualiza el modelo de la tabla
+               //detDatos();
+            //modeloTabla.addRow(filas);
+            // tabNomina.setModel(modeloTabla);
         }
     }
 
-    
+
 
 
 }
